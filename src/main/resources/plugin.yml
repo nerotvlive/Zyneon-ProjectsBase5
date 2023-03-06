@@ -1,0 +1,53 @@
+name: ProjectsBase
+version: '${project.version}'
+main: com.zyneonstudios.nerotvlive.projectsbase.Main
+api-version: 1.18
+authors: [ nerotvlive ]
+description: The source of Zyneon Studios mod projects
+
+commands:
+  author:
+    aliases: [project,projectsbase,source,zyneon]
+  book:
+    aliases: [buch,writable,feder,feather]
+  broadcast:
+    aliases: [bc,alert]
+  clearchat:
+    aliases: [chatclear,cc,clearc,chatc]
+  day:
+  feed:
+  fly:
+  gamemode:
+    aliases: [gm,spielmodus,sm]
+  god:
+  heal:
+  invsee:
+  money:
+  lock:
+  night:
+  ping:
+  poweruser:
+    aliases: [pu,mohistoperatorcommand,magmaoperatorcommand,moc,op,operator,superuser,su]
+  rain:
+  roleplay:
+    aliases: [rp]
+  say:
+  shout:
+    aliases: [s,schreien]
+  skin:
+  speed:
+  srl:
+    aliases: [stop,srs,serverstop,serverrestart,serverreload,restart,rl,rs,reload,end]
+  sun:
+  tell:
+    aliases: [t,m,msg]
+  thunder:
+  trust:
+  unlock:
+  warp:
+    aliases: [spawn]
+  whisper:
+    aliases: [w,f,flüstern]
+  whitelist:
+    aliases: [list,white-list]
+  world:
