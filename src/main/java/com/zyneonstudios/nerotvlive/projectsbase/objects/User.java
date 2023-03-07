@@ -4,7 +4,6 @@ import com.mojang.authlib.GameProfile;
 import com.zyneonstudios.nerotvlive.projectsbase.Main;
 import com.zyneonstudios.nerotvlive.projectsbase.utils.Communicator;
 import com.zyneonstudios.nerotvlive.projectsbase.utils.Strings;
-import com.zyneonstudios.nerotvlive.projectsbase.utils.storage.Storage;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 
@@ -18,7 +17,6 @@ public class User {
     private String inventoryMode;
     private String interactMode;
     private String chatMode;
-    private Storage config;
     private GameProfile profile;
 
     public User(UUID uuid) {
@@ -71,10 +69,6 @@ public class User {
 
     public Player getPlayer() {
         return player;
-    }
-
-    public Storage getConfig() {
-        return config;
     }
 
     public int getPing() {
@@ -212,8 +206,6 @@ public class User {
         this.inventoryMode = null;
         this.chatMode = null;
         this.profile = null;
-        this.config.unload();
-        this.config = null;
         if(player!=null) {
             Communicator.broadcastRaw("§8[§c-§8]§e "+player.getName());
         }

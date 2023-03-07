@@ -3,6 +3,7 @@ package com.zyneonstudios.nerotvlive.projectsbase.commands;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.zyneonstudios.nerotvlive.projectsbase.Main;
+import com.zyneonstudios.nerotvlive.projectsbase.objects.User;
 import com.zyneonstudios.nerotvlive.projectsbase.utils.Communicator;
 import com.zyneonstudios.nerotvlive.projectsbase.utils.Strings;
 import org.bukkit.Bukkit;
@@ -19,6 +20,7 @@ public class SkinCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender s, Command command, String label, String[] args) {
         if (s instanceof Player p) {
+            User u = Main.getUser(p);
             if (args.length == 2) {
                 if(args[0].equalsIgnoreCase("delete")) {
                     if(Main.storage.get(p.getUniqueId()+"_"+args[1])!=null) {
@@ -29,7 +31,7 @@ public class SkinCommand implements CommandExecutor, TabCompleter {
                     }
                 } else if(args[0].equalsIgnoreCase("load")) {
                     if(Main.storage.get(p.getUniqueId()+"_"+args[1])!=null) {
-                        GameProfile profile = new GameProfile(p.getUniqueId(),null);
+                        GameProfile profile = u.getProfile();
                         profile.getProperties().removeAll("textures");
                         profile.getProperties().put("textures",new Property("ewogICJ0aW1lc3RhbXAiIDogMTY3ODA0Njk2NTE3MCwKICAicHJvZmlsZUlkIiA6ICI2NDQ3NzU3ZjU5ZmU0MjA2YWUzZmRjNjhmZjJiYjZmMCIsCiAgInByb2ZpbGVOYW1lIiA6ICJuZXJvdHZsaXZlIiwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzliYTVhYTYzZDA5M2Y0YjM3NDYxNWE2YmUzOTQ1MmM3NzIyNmI2MWRiMzIyZjM3ZmY5MzkzNGNiNjA0YzFiOTUiLAogICAgICAibWV0YWRhdGEiIDogewogICAgICAgICJtb2RlbCIgOiAic2xpbSIKICAgICAgfQogICAgfQogIH0KfQ==","textures"));
                         Bukkit.getOnlinePlayers().forEach(a -> a.hidePlayer(Main.getInstance(),p)); Bukkit.getOnlinePlayers().forEach(a -> a.showPlayer(Main.getInstance(),p));

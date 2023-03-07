@@ -82,6 +82,5 @@ public class InventoryClickListener implements Listener {
     public void onInventoryClose(InventoryCloseEvent e) {
         User u = Main.getUser(e.getPlayer().getUniqueId());
         u.setInventoryMode("normal");
-        u.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR,new TextComponent(Main.economy.getBalance(u.getUUID())+" | "+Main.economy.getSalary(u.getUUID())));
     }
 }
