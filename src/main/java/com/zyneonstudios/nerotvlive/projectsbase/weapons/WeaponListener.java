@@ -115,7 +115,7 @@ public class WeaponListener implements Listener {
                         public void run() {
                             if(weaponModel.startsWith("zyneon:crystal_gun")) {
                                 if (arrow.isOnGround() || arrow.isDead() || !arrow.isValid()) {
-                                    energyCharge(arrow);
+                                    energyCharge(arrow,2);
                                     this.cancel();
                                     return;
                                 }
@@ -153,8 +153,8 @@ public class WeaponListener implements Listener {
         }
     }
 
-    private void energyCharge(Entity arrow) {
-        for(int i = 0; i < 2; i++) {
+    private void energyCharge(Entity arrow,int charge_numbers) {
+        for(int i = 0; i < charge_numbers; i++) {
             BreezeWindCharge charge = (BreezeWindCharge) arrow.getWorld().spawnEntity(arrow.getLocation(), EntityType.BREEZE_WIND_CHARGE);
             arrow.remove();
             charge.setInvisible(true);
@@ -209,7 +209,7 @@ public class WeaponListener implements Listener {
             target.setNoDamageTicks(0);
             target.damage(4);
             if (weaponModel != null && weaponModel.startsWith("zyneon:crystal_gun")) {
-                energyCharge(arrow);
+                energyCharge(arrow,2);
                 event.setCancelled(true);
             }
         }
