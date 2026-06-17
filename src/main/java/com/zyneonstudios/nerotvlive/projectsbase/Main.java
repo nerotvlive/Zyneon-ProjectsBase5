@@ -53,11 +53,11 @@ public final class Main extends JavaPlugin {
             Communicator.sendRaw("§0");
             customMain = new CustomMain();
             customMain.load();
-        }
-        if(config.getCFG().getBoolean("Settings.modules.weapons")) {
-            Communicator.sendRaw("§0");
-            weaponsMain = new WeaponMain();
-            weaponsMain.load();
+            if(config.getCFG().getBoolean("Settings.modules.weapons")) {
+                Communicator.sendRaw("§0");
+                weaponsMain = new WeaponMain();
+                weaponsMain.load();
+            }
         }
         Communicator.sendRaw("§0");
         Communicator.sendRaw("Successfully loaded §fProjectsBase§7 version §f"+version+"§8...");
@@ -199,6 +199,7 @@ public final class Main extends JavaPlugin {
         initCommand(new WorldCommand());
         initCommand(muteCommand);
         initCommand(voicemuteCommand);
+        initCommand(new ReplyCommand());
 
         Communicator.sendRaw("§0");
         Communicator.sendRaw("§0");

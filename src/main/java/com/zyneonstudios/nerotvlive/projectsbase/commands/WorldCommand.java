@@ -185,7 +185,8 @@ public class WorldCommand implements CommandExecutor {
                                     sendSyntax(s);
                                 }
                             } else {
-                                Communicator.sendError(p,"§cDiese Welt ist bereits geladen. Mache §4/world "+args[1]+"§c um zu ihr zu gelangen!");
+                                Communicator.sendError(s,"§cDiese Welt ist bereits geladen. Aber da ich ein schlaues Plugin bin, teleportiere ich dich trotzdem!");
+                                p.teleport(Objects.requireNonNull(Bukkit.getWorld(args[1])).getSpawnLocation());
                             }
                         } else {
                             sendSyntax(s);

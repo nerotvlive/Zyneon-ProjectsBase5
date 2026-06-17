@@ -22,7 +22,12 @@ public class TellCommand implements CommandExecutor, TabCompleter {
             Communicator.sendError(s,"/msg [Spieler*in] [Nachricht...]");
         } else {
             if(Bukkit.getPlayer(args[0])!=null) {
+                String sender = "console";
+                if(s instanceof Player p) {
+                    sender = p.getName();
+                }
                 User t = Main.getUser(Bukkit.getPlayer(args[0]));
+                t.setLastReceivedSender(sender);
                 String m = "";
                 for (int i = 1; i < args.length; i++) {
                     m = m + args[i] + " ";
@@ -38,6 +43,11 @@ public class TellCommand implements CommandExecutor, TabCompleter {
                 Communicator.sendRaw(t.getPlayer(),"§8[§7MSG§8] §6"+name+" §f-> §eDir§8: §7"+m);
                 t.getPlayer().playSound(t.getPlayer().getLocation(),Sound.ENTITY_CHICKEN_EGG,100,100);
             } else if(args[0].equalsIgnoreCase("server")||args[0].equalsIgnoreCase("console")||args[0].equalsIgnoreCase("konsole")) {
+                String sender = "console";
+                if(s instanceof Player p) {
+                    sender = p.getName();
+                }
+                ReplyCommand.setLastReceivedSender(sender);
                 String m = "";
                 for (int i = 1; i < args.length; i++) {
                     m = m + args[i] + " ";

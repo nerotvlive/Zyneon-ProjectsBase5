@@ -20,7 +20,7 @@ public class ExplosionListener implements Listener {
 
     @EventHandler
     public void onExplosion(EntityExplodeEvent e) {
-        if (e.getEntity().getWorld() == Bukkit.getWorlds().getFirst()) {
+        if (!e.getEntity().getType().equals(EntityType.BREEZE_WIND_CHARGE) && e.getEntity().getWorld() == Bukkit.getWorlds().getFirst()) {
             e.getEntity().remove();
             e.setCancelled(true);
         }
@@ -28,7 +28,7 @@ public class ExplosionListener implements Listener {
 
     @EventHandler
     public void onExplosion(ExplosionPrimeEvent e) {
-        if (e.getEntity().getWorld() == Bukkit.getWorlds().getFirst()) {
+        if (!e.getEntity().getType().equals(EntityType.BREEZE_WIND_CHARGE) && e.getEntity().getWorld() == Bukkit.getWorlds().getFirst()) {
             e.getEntity().remove();
             e.setCancelled(true);
         }

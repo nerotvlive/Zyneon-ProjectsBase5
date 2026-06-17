@@ -13,6 +13,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CrossbowMeta;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
@@ -174,15 +175,29 @@ public class WeaponItems {
         return revolver;
     }
 
+    @SuppressWarnings("deprecation")
     public static ItemStack getCrsytalGun() {
         ItemStack revolver = getFormattedCrossbow();
         CrossbowMeta meta = (CrossbowMeta) revolver.getItemMeta();
-
         meta.setDisplayName("§r§fKristall Waffe");
         meta.setItemModel(new NamespacedKey("zyneon", "crystal_gun"));
-
+        meta.setChargedProjectiles(null);
+        meta.addChargedProjectile(getCrystalGunEnergy());
         revolver.setItemMeta(meta);
+        Damageable damageable = (Damageable) revolver.getItemMeta();
+        damageable.setMaxDamage(50);
+        damageable.setDamage(0);
+        damageable.setLore(null);
+        revolver.setItemMeta(damageable);
         return revolver;
+    }
+
+    public static ItemStack getCrystalGunEnergy() {
+        ItemStack projectile = new ItemStack(Material.ARROW);
+        ItemMeta itemMeta = projectile.getItemMeta();
+        itemMeta.setDisplayName("§r§dKristallenergie§r");
+        projectile.setItemMeta(itemMeta);
+        return projectile;
     }
 
     public static ItemStack getKnife() {

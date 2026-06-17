@@ -1,4 +1,4 @@
-# ProjectsBase5 (v5.26.1)
+# ProjectsBase5 (v5.26.2)
 
 > **WARNING:** An overly complicated, bug-ridden, and highly discouraged base plugin for Minecraft RP projects. It *does* contain features for roleplay, custom items, and weapons... but at what cost?
 

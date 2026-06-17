@@ -151,9 +151,11 @@ public class PlayerChatListener implements Listener {
 
     private void onRoleplayChat(User u, String message) {
         Player p = u.getPlayer();
+        message = "§8[§6RP§8] §e"+u.getSelectedCharacter().getJob()+" §f• §e"+u.getSelectedCharacter().getName()+"§8 » §7"+message;
+        Communicator.sendRaw(message);
         for(Player all : Bukkit.getOnlinePlayers()) {
             if(all.getWorld() == p.getWorld() && all.getLocation().distance(p.getLocation()) <= 30) {
-                Communicator.sendRaw(all,"§8[§6RP§8] §e"+u.getSelectedCharacter().getJob()+" §f• §e"+u.getSelectedCharacter().getName()+"§8 » §7"+message);
+                Communicator.sendRaw(all, message);
             }
         }
     }

@@ -1,24 +1,26 @@
 package com.zyneonstudios.nerotvlive.projectsbase.weapons;
 
 import com.zyneonstudios.nerotvlive.projectsbase.Main;
+import com.zyneonstudios.nerotvlive.projectsbase.utils.Communicator;
 import io.papermc.paper.event.entity.EntityLoadCrossbowEvent;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
-import org.bukkit.entity.AbstractArrow;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CrossbowMeta;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+
+import java.util.ArrayList;
 import java.util.List;
-import java.awt.*;
 import java.util.Objects;
 
 public class WeaponListener implements Listener {
@@ -29,6 +31,7 @@ public class WeaponListener implements Listener {
         ammoKey = new NamespacedKey(Main.getInstance(), "ammo");
     }
 
+    @SuppressWarnings("deprecation")
     @EventHandler
     public void onWeaponShot(EntityShootBowEvent event) {
         Entity entity = event.getEntity();
@@ -77,6 +80,16 @@ public class WeaponListener implements Listener {
                         velocity = 1.9;
                         damage = 2.0;
                         break;
+                    case String s when s.startsWith("zyneon:crystal_gun"):
+                        entity.getWorld().playSound(entity.getLocation(), "zyneon:crossbow.crystal_gun_shoot", 2f, 1f);
+                        ArrayList<String> lore = new ArrayList<>();
+                        lore.add("§4Entladen§8! §cBenutze die Waffe um zu laden§8.");
+                        meta.setLore(lore);
+                        weapon.setItemMeta(meta);
+                        Damageable damageable = (Damageable)weapon.getItemMeta();
+                        damageable.setDamage(damageable.getMaxDamage()-2);
+                        weapon.setItemMeta(damageable);
+                        break;
                     default:
                         entity.getWorld().playSound(entity.getLocation(), "zyneon:crossbow.crossbow_shoot", 1f, 1f);
                         break;
@@ -84,6 +97,8 @@ public class WeaponListener implements Listener {
 
                 Entity projectile = event.getProjectile();
                 if (projectile instanceof AbstractArrow arrow) {
+                    NamespacedKey weaponKey = new NamespacedKey(Main.getInstance(), "weapon_model");
+                    arrow.getPersistentDataContainer().set(weaponKey, PersistentDataType.STRING, weaponModel);
                     arrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
                     arrow.setSilent(true);
                     arrow.setVelocity(arrow.getVelocity().multiply(velocity));
@@ -98,14 +113,22 @@ public class WeaponListener implements Listener {
 
                         @Override
                         public void run() {
-                            if (arrow.isOnGround()) {
-                                arrow.remove();
-                                this.cancel();
-                                return;
-                            }
-                            if (arrow.isDead() || !arrow.isValid()) {
-                                this.cancel();
-                                return;
+                            if(weaponModel.startsWith("zyneon:crystal_gun")) {
+                                if (arrow.isOnGround() || arrow.isDead() || !arrow.isValid()) {
+                                    energyCharge(arrow);
+                                    this.cancel();
+                                    return;
+                                }
+                            } else {
+                                if (arrow.isOnGround()) {
+                                    arrow.remove();
+                                    this.cancel();
+                                    return;
+                                }
+                                if (arrow.isDead() || !arrow.isValid()) {
+                                    this.cancel();
+                                    return;
+                                }
                             }
 
                             Location currentPos = arrow.getLocation();
@@ -114,7 +137,12 @@ public class WeaponListener implements Listener {
 
                             for (double d = 0; d < distance; d += 0.5) {
                                 Location loc = lastPos.clone().add(direction.clone().multiply(d));
-                                arrow.getWorld().spawnParticle(Particle.SMOKE, loc, 1, 0, 0, 0, 0.01);
+                                if(weaponModel.startsWith("zyneon:crystal_gun")) {
+                                    Particle.DustOptions dustOptions = new Particle.DustOptions(Color.fromRGB(191, 50, 252), 1.5F);
+                                    arrow.getWorld().spawnParticle(Particle.DUST, loc, 1, 0.0, 0.0, 0.0, 0.0, dustOptions);
+                                } else {
+                                    arrow.getWorld().spawnParticle(Particle.SMOKE, loc, 1, 0, 0, 0, 0.01);
+                                }
                             }
 
                             lastPos = currentPos.clone();
@@ -125,18 +153,89 @@ public class WeaponListener implements Listener {
         }
     }
 
+    private void energyCharge(Entity arrow) {
+        for(int i = 0; i < 2; i++) {
+            BreezeWindCharge charge = (BreezeWindCharge) arrow.getWorld().spawnEntity(arrow.getLocation(), EntityType.BREEZE_WIND_CHARGE);
+            arrow.remove();
+            charge.setInvisible(true);
+            charge.explode();
+        }
+    }
+
+    private static final ArrayList<ItemStack> reloadingCrystalGuns = new ArrayList<>();
+    @SuppressWarnings("deprecation")
+    public static void reloadCrystalGun(ItemStack crystalGun, Player holder) {
+        if(!reloadingCrystalGuns.contains(crystalGun)) {
+            reloadingCrystalGuns.add(crystalGun);
+            Damageable damageable = (Damageable) crystalGun.getItemMeta();
+            holder.getWorld().playSound(holder.getLocation(), "zyneon:crossbow.crystal_gun_loading_start", 2f, 0.8f);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    try {
+                        if(damageable == null) return;
+                        if (damageable.hasDamage()) {
+                            damageable.setDamage(damageable.getDamage() - 1);
+                            crystalGun.setItemMeta(damageable);
+                            holder.playSound(holder.getLocation(), "zyneon:crossbow.crystal_gun_loading_middle", 0.04F, 0.01F);
+                        } else {
+                            damageable.setDamage(0);
+                            damageable.setLore(null);
+                            crystalGun.setItemMeta(damageable);
+                            CrossbowMeta gunMeta = (CrossbowMeta) crystalGun.getItemMeta();
+                            gunMeta.setChargedProjectiles(null);
+                            gunMeta.addChargedProjectile(WeaponItems.getCrystalGunEnergy());
+                            crystalGun.setItemMeta(gunMeta);
+                            reloadingCrystalGuns.remove(crystalGun);
+                            this.cancel();
+                            holder.getWorld().playSound(holder.getLocation(), "zyneon:crossbow.crystal_gun_loading_end", 0.3f, 0.01f);
+                        }
+                    } catch (Exception e) {
+                        Communicator.sendError("§4Fehler: §cKristallwaffe konnte nicht weiter aufgeladen werden§8: §7"+e.getMessage());
+                        this.cancel();
+                    }
+                }
+            }.runTaskTimer(Main.getInstance(), 0,1);
+        }
+    }
+
+    @EventHandler
+    public void onProjectileHit(ProjectileHitEvent event) {
+        if (!(event.getEntity() instanceof AbstractArrow arrow)) return;
+        NamespacedKey weaponKey = new NamespacedKey(Main.getInstance(), "weapon_model");
+        if (!arrow.getPersistentDataContainer().has(weaponKey, PersistentDataType.STRING)) return;
+        String weaponModel = arrow.getPersistentDataContainer().get(weaponKey, PersistentDataType.STRING);
+        if (event.getHitEntity() instanceof LivingEntity target) {
+            target.setNoDamageTicks(0);
+            target.damage(4);
+            if (weaponModel != null && weaponModel.startsWith("zyneon:crystal_gun")) {
+                energyCharge(arrow);
+                event.setCancelled(true);
+            }
+        }
+    }
+
     @EventHandler
     public void onWeaponReloadingStart(PlayerInteractEvent event) {
         if (event.getAction().isRightClick() && event.hasItem()) {
             ItemStack weapon = event.getItem();
             if (weapon != null && weapon.getType() == Material.CROSSBOW) {
-                var meta = weapon.getItemMeta();
+                CrossbowMeta meta = (CrossbowMeta)weapon.getItemMeta();
                 Player player = event.getPlayer();
 
-                if (meta instanceof CrossbowMeta cbMeta) {
-                    if (cbMeta.hasChargedProjectiles() || !player.getInventory().contains(Material.ARROW) && player.getGameMode() != GameMode.CREATIVE) {
-                        return;
+                if(meta.hasItemModel() && Objects.requireNonNull(meta.getItemModel()).toString().startsWith("zyneon:crystal_gun")) {
+                    event.setCancelled(!meta.hasChargedProjectiles());
+                    Damageable damageable = (Damageable)meta;
+                    if (damageable.hasDamage()) {
+                        if(!reloadingCrystalGuns.contains(weapon)) {
+                            reloadCrystalGun(weapon, player);
+                        }
                     }
+                    return;
+                }
+
+                if (meta.hasChargedProjectiles() || !player.getInventory().contains(Material.ARROW) && player.getGameMode() != GameMode.CREATIVE) {
+                    return;
                 }
 
                 if (!meta.hasItemModel()) {
@@ -196,7 +295,7 @@ public class WeaponListener implements Listener {
     public void onWeaponReloadingEnd(EntityLoadCrossbowEvent event) {
         Entity entity = event.getEntity();
 
-        var meta = event.getCrossbow().getItemMeta();
+        CrossbowMeta meta = (CrossbowMeta)event.getCrossbow().getItemMeta();
         if (!meta.hasItemModel()) {
             entity.getWorld().playSound(entity.getLocation(), "zyneon:crossbow.crossbow_loading_end", 1f, 1f);
         } else if (meta.hasItemModel()) {

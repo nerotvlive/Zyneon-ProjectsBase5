@@ -16,15 +16,15 @@ import java.util.List;
 public class WeaponCommand implements CommandExecutor, TabCompleter {
 
     private void sendSyntax(CommandSender s) {
-        Communicator.sendError(s,"§c/weapon §7<weapon> §7<amount>");
+        Communicator.sendError(s, "§c/weapon §7<weapon> §7<amount>");
     }
 
     @Override
     public boolean onCommand(@NotNull CommandSender s, @NotNull Command cmd, @NotNull String label, @NotNull String @NotNull [] args) {
-        if(s.hasPermission("zyneon.team")) {
-            if(args.length > 0) {
+        if (s.hasPermission("zyneon.team")) {
+            if (args.length > 0) {
                 int amount = 1;
-                if(args.length > 1) {
+                if (args.length > 1) {
                     try {
                         amount = Integer.parseInt(args[1]);
                     } catch (NumberFormatException e) {
@@ -33,8 +33,8 @@ public class WeaponCommand implements CommandExecutor, TabCompleter {
                     }
                 }
                 String id = args[0].toLowerCase();
-                if(WeaponItems.getWeapons().containsKey(id)) {
-                    if(s instanceof Player p) {
+                if (WeaponItems.getWeapons().containsKey(id)) {
+                    if (s instanceof Player p) {
                         ItemStack item = WeaponItems.getWeapons().get(id).clone();
                         item.setAmount(amount);
                         p.getInventory().addItem(item);
@@ -43,7 +43,7 @@ public class WeaponCommand implements CommandExecutor, TabCompleter {
                     }
                 }
             } else {
-                if(s instanceof Player p) {
+                if (s instanceof Player p) {
                     p.openInventory(WeaponItems.getWeaponsMenu());
                 } else {
                     Communicator.sendError(s, Strings.needPlayer);
@@ -57,8 +57,8 @@ public class WeaponCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
-        if(sender.hasPermission("zyneon.team")) {
-            if(args.length == 1) {
+        if (sender.hasPermission("zyneon.team")) {
+            if (args.length == 1) {
                 return WeaponItems.getWeapons().keySet().stream().toList();
             }
         }

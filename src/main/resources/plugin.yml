@@ -58,3 +58,5 @@ commands:
     aliases: [welt,map,karte]
   skin:
   search:
+  reply:
+    aliases: [r,answer,a,antworten,antwort,antworte]

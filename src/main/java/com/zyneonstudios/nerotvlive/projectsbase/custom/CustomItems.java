@@ -1,5 +1,7 @@
 package com.zyneonstudios.nerotvlive.projectsbase.custom;
 
+import com.zyneonstudios.nerotvlive.projectsbase.Main;
+import com.zyneonstudios.nerotvlive.projectsbase.weapons.WeaponItems;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -25,6 +27,13 @@ public class CustomItems {
 
     public static void init() {
         customItems.clear();
+        customItems.put("cloak_boots", getCloakBoots());
+        customItems.put("cloak_chestplate", getCloakChestplate());
+        customItems.put("cloak_helmet", getCloakHelmet());
+        customItems.put("cloak_leggings", getCloakLeggings());
+        customItems.put("fishbasket", getFishbasket());
+        customItems.put("ice", getIce());
+
         customItems.put("mark_1", getMark(Variant.ONE));
         customItems.put("mark_2", getMark(Variant.TWO));
         customItems.put("mark_5", getMark(Variant.FIVE));
@@ -34,15 +43,13 @@ public class CustomItems {
         customItems.put("mark_100", getMark(Variant.ONEHUNDRET));
         customItems.put("mark_200", getMark(Variant.TWOHUNDRET));
 
-        customItems.put("ice", getIce());
-        customItems.put("fishbasket", getFishbasket());
-        customItems.put("wrench", getWrench());
         customItems.put("toolbox", getToolbox());
+        customItems.put("wrench", getWrench());
         customItems.put("sack", getSack());
-        customItems.put("cloak_helmet", getCloakHelmet());
-        customItems.put("cloak_chestplate", getCloakChestplate());
-        customItems.put("cloak_leggings", getCloakLeggings());
-        customItems.put("cloak_boots", getCloakBoots());
+        if(Main.config.getCFG().getBoolean("Settings.modules.weapons")) {
+            WeaponItems.init();
+            customItems.putAll(WeaponItems.getWeapons());
+        }
     }
 
     public static ItemStack getMark(Variant variant) {

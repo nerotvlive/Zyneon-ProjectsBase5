@@ -30,6 +30,7 @@ public class User {
     private ArrayList<Character> characters = new ArrayList<>();
     private UUID selectedCharacter;
     private boolean hasPlayedBefore = false;
+    private String lastReceivedSender = null;
 
     //MODES
     private String interactMode = "null";
@@ -318,5 +319,13 @@ public class User {
     public void setLastCity(String lastCity) {
         this.lastCity = lastCity;
         config.set("user.lastCity", lastCity);
+    }
+
+    public void setLastReceivedSender(String lastReceivedSender) {
+        this.lastReceivedSender = lastReceivedSender;
+    }
+
+    public String getLastReceivedSender() {
+        return lastReceivedSender;
     }
 }

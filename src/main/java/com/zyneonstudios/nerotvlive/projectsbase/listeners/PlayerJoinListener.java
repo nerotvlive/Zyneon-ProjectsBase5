@@ -25,9 +25,7 @@ import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.random.RandomGenerator;
 
 //no, it's totally fine to use a default String
 @SuppressWarnings( "deprecation")
@@ -130,7 +128,11 @@ public class PlayerJoinListener implements Listener {
             return WarpAPI.getWarp(result+random).getLocation();
         } catch (Exception e) {
             Communicator.sendError(e.getMessage());
-            return WarpAPI.getWarp("rincon_hotel_01").getLocation();
+            try {
+                return WarpAPI.getWarp("rincon_hotel_01").getLocation();
+            } catch (Exception e1) {
+                return Bukkit.getWorlds().getFirst().getSpawnLocation();
+            }
         }
     }
 }
