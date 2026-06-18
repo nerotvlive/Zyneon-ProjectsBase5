@@ -17,7 +17,7 @@ public class ReplyCommand implements CommandExecutor {
     public boolean onCommand(CommandSender s, Command cmd, String label, String [] args) {
         String receiver = lastReceivedSender;
         if(s instanceof Player p) {
-            User u = Main.getUser(p);
+            User u = Main.getUser(p.getUniqueId());
             receiver = u.getLastReceivedSender();
         }
         if(args.length == 0) {
