@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WeaponCommand implements CommandExecutor, TabCompleter {
@@ -68,7 +69,9 @@ public class WeaponCommand implements CommandExecutor, TabCompleter {
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
         if (sender.hasPermission("zyneon.team")) {
             if (args.length == 1) {
-                return WeaponItems.getWeapons().keySet().stream().toList();
+                ArrayList<String> list = new ArrayList<>(WeaponItems.getWeapons().keySet());
+                list.add("crystalboost");
+                return list;
             }
         }
         return List.of();
