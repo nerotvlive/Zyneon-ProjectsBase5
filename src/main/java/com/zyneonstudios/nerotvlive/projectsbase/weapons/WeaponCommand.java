@@ -36,9 +36,9 @@ public class WeaponCommand implements CommandExecutor, TabCompleter {
                 if(id.equalsIgnoreCase("crystalboost")) {
                     try {
                         WeaponListener.crystalBoost = Integer.parseInt(args[1]);
-                        Communicator.sendInfo(s,"&7Der §dCrystal Boost§7 wurde auf &e" + args[1] + "&7 gesetzt§8.");
+                        Communicator.sendInfo(s,"§7Der §dCrystal Boost§7 wurde auf §e" + args[1] + "§7 gesetzt§8.");
                     } catch (Exception e) {
-                        Communicator.sendError(s, "&cDie Zahl ist nicht valide.");
+                        Communicator.sendError(s, "§cDie §4"+args[0]+"§c Zahl ist nicht valide§8.");
                     }
                     return true;
                 }
