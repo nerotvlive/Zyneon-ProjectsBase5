@@ -33,6 +33,15 @@ public class WeaponCommand implements CommandExecutor, TabCompleter {
                     }
                 }
                 String id = args[0].toLowerCase();
+                if(id.equalsIgnoreCase("crystalboost")) {
+                    try {
+                        WeaponListener.crystalBoost = Integer.parseInt(args[1]);
+                        Communicator.sendInfo(s,"&7Der §dCrystal Boost§7 wurde auf &e" + args[1] + "&7 gesetzt§8.");
+                    } catch (Exception e) {
+                        Communicator.sendError(s, "&cDie Zahl ist nicht valide.");
+                    }
+                    return true;
+                }
                 if (WeaponItems.getWeapons().containsKey(id)) {
                     if (s instanceof Player p) {
                         ItemStack item = WeaponItems.getWeapons().get(id).clone();

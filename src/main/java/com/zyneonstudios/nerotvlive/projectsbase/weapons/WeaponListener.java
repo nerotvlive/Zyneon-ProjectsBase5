@@ -26,6 +26,7 @@ import java.util.Objects;
 public class WeaponListener implements Listener {
 
     private final NamespacedKey ammoKey;
+    public static int crystalBoost = 2;
 
     public WeaponListener() {
         ammoKey = new NamespacedKey(Main.getInstance(), "ammo");
@@ -115,7 +116,7 @@ public class WeaponListener implements Listener {
                         public void run() {
                             if(weaponModel.startsWith("zyneon:crystal_gun")) {
                                 if (arrow.isOnGround() || arrow.isDead() || !arrow.isValid()) {
-                                    energyCharge(arrow,2);
+                                    energyCharge(arrow,crystalBoost);
                                     this.cancel();
                                     return;
                                 }
@@ -154,7 +155,7 @@ public class WeaponListener implements Listener {
     }
 
     private void energyCharge(Entity arrow) {
-        energyCharge(arrow,2);
+        energyCharge(arrow,crystalBoost);
     }
 
     private void energyCharge(Entity arrow,int charge_numbers) {
@@ -213,7 +214,7 @@ public class WeaponListener implements Listener {
             target.setNoDamageTicks(0);
             target.damage(4);
             if (weaponModel != null && weaponModel.startsWith("zyneon:crystal_gun")) {
-                energyCharge(arrow);
+                energyCharge(arrow,crystalBoost);
                 event.setCancelled(true);
             }
         }
