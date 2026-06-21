@@ -34,4 +34,4 @@ We are currently working on a complete, ground-up rewrite that will feature **Pr
 * **Properly localized** (full translation/localization support)
 * And much, much more!
 
-The new plugin's repository can be found [here](https://github.com/zyneonstudios/ProjectsBase):  [@3zyneonstudios/ProjectsBase](https://github.com/zyneonstudios/ProjectsBase)
+The new plugin's repository can be found [here](https://github.com/zyneonstudios/ProjectsBase):  [@zyneonstudios/ProjectsBase](https://github.com/zyneonstudios/ProjectsBase)
