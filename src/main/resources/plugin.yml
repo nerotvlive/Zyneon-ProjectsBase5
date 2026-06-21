@@ -1,4 +1,4 @@
-name: ProjectsBase
+name: ProjectsBas
 version: '${project.version}'
 main: com.zyneonstudios.nerotvlive.projectsbase.Main
 api-version: 1.21
