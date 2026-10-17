@@ -5,11 +5,7 @@
 
 > [!IMPORTANT]
 > ### Deprecation Notice (Read this before doing anything)
-> To be perfectly clear: **this plugin has been effectively deprecated since 2023/2024.** If you are cloning this repo expecting anything to work out of the box, lower your expectations to zero, and then lower them a bit more. You have been warned.
-
-> [!NOTE]
-> ### End of Life Notice
-> **This project has reached its final feature freeze and will be officially discontinued on July 30, 2026, until then it will get bug fixes.** Further development of this plugin is no longer sustainable. Parts of this codebase are over 6 years old, and the entire repository has evolved into a chaotic, tangled mess that we refuse to maintain any longer.
+> This project is deprecated and discontinued. No support, no guarantees
 
 ---
 
